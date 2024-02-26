@@ -77,11 +77,12 @@ button_pushed = False   # ('#' für Testen am PC)
 #button_pushed = True   # ('#' für Nutzung am Raspi)
 button_last_time_pressed = 0
 alpha = 0.
-alpha_list = []
+datenset = []
+#alpha_list = []
 clock = time.time()
 startzeit = time.time()
-time_list = []
-Temperatur_list = []
+#time_list = []
+#Temperatur_list = []
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
 GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
 
@@ -108,8 +109,8 @@ while True:
                 zeit = time.localtime(time.time())
                 zeit_str = str(zeit.tm_year)+'-'+str(zeit.tm_mon)+'-'+str(zeit.tm_mday)+' '+str(zeit.tm_hour)+'-'+str(zeit.tm_min)+'-'+str(zeit.tm_sec)
                 dateiname = zeit_str+'Aushaerteverlauf.xlsx'
-                exportDataToExcel([time_list,Temperatur_list,alpha_list],dateiname,zeit_str)
-                print ('Messung beendet und Daten in Exceltabelle gespeichert.')
+                exportDataToExcel(datenset,dateiname,zeit_str)
+                print ('Messung beendet und Daten in Exceltabelle gespeichert. Drücke Strg-C um das Skript zu beenden oder betätige den Knopf, um eine neue Messung zu starten.')
 
     if (button_pushed == True):
         temp = giveTemperatureValue()+273.15    # aktuelle Temperatur in K anfordern
@@ -117,11 +118,13 @@ while True:
         clock_new = time.time()
         delta_t = clock_new - clock
         alpha = alpha+(grindlingModell(alpha,temp) * delta_t)
-        Temperatur_list.append(temp)
-        time_list.append(clock_new-startzeit)
-        alpha_list.append(alpha)
+        new_set = []
+        new_set.append(clock_new-startzeit)
+        new_set.append(temp)
+        new_set.append(alpha)
+        datenset.append(new_set)
         clock = clock_new
-        print('Zeit[s]:',time_list[-1],',  Temperatur[K]:', Temperatur_list[-1], ',  alpha:', alpha_list[-1])
+        print('Zeit[s], Temperatur[K], alpha:', new_set)
 
     time.sleep(pause_between_measurements)
 
