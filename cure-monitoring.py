@@ -37,12 +37,6 @@ def grindlingModell(alpha, T):
 
     return deltaAlphaDeltaZeit
 
-def toggle_button():
-    if button_pushed == True:
-        button_pushed = False
-    else:
-        button_pushed = True
-
 def exportDataToExcel(data, name_exceldatei, name_sheet):   # schreibt eine list of lists in eine Exceltabelle gemäß listOfLists[zeile][spalte].
 
     workbook = openpyxl.Workbook()
@@ -79,8 +73,8 @@ def giveTemperatureValue():
 
 
 
-#button_pushed = False
-button_pushed = True
+button_pushed = False   # ('#' für Testen am PC)
+#button_pushed = True   # ('#' für Nutzung am Raspi)
 button_last_time_pressed = 0
 alpha = 0.
 alpha_list = []
@@ -96,8 +90,13 @@ pause_between_measurements = 0.3
 #while True:
 for i in range(1,1000):
     if (time.time()-button_last_time_pressed > 5):  # ein Knopfdruck wird erst wieder 5s nach der letzten Betätigung registriert
-        if GPIO.input(11) == GPIO.HIGH: #()'False' zum Testen am PC)
-            toggle_button()
+        if GPIO.input(11) == GPIO.HIGH: # ('False' zum Testen am PC)
+            
+            if button_pushed == True:   # toggle button
+                button_pushed = False
+            else:
+                button_pushed = True
+
             button_last_time_pressed = time.time()
             if (button_pushed == True):
                 clock = time.time()     # Startzeitpunkt der Messung setzen
