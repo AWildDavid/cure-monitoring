@@ -87,8 +87,8 @@ GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen a
 
 pause_between_measurements = 0.3
 
-#while True:
-for i in range(1,1000):
+while True:
+#for i in range(1,1000):    # (zum Testen am PC anstelle 'while True')
     if (time.time()-button_last_time_pressed > 5):  # ein Knopfdruck wird erst wieder 5s nach der letzten Betätigung registriert
         if GPIO.input(11) == GPIO.HIGH: # ('False' zum Testen am PC)
             
