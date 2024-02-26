@@ -78,11 +78,8 @@ button_pushed = False   # ('#' für Testen am PC)
 button_last_time_pressed = 0
 alpha = 0.
 datenset = []
-#alpha_list = []
 clock = time.time()
 startzeit = time.time()
-#time_list = []
-#Temperatur_list = []
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
 GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
 
@@ -114,7 +111,6 @@ while True:
 
     if (button_pushed == True):
         temp = giveTemperatureValue()+273.15    # aktuelle Temperatur in K anfordern
-        #temp = 100+273.15   # Testtemperatur
         clock_new = time.time()
         delta_t = clock_new - clock
         alpha = alpha+(grindlingModell(alpha,temp) * delta_t)
