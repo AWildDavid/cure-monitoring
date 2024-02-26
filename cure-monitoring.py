@@ -7,7 +7,7 @@
 import numpy as np
 import time
 from math import isnan
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO     # ('#' zum Testen am PC)
 import openpyxl
 
 # Kinetikmodell nach Grindling:
@@ -59,7 +59,8 @@ def exportDataToExcel(data, name_exceldatei, name_sheet):   # schreibt eine list
     workbook.close()
 
 def readTemperature():      # liest die Temperatur des Sensors aus. Falls der Wert 'nan' entspricht, wird ein neuer Messwert angefordert, bis eine gültige Zahl vorliegt
-    temp = sensor.readTempC()
+#    temp = sensor.readTempC()
+    temp = 100  # Testtemperatur
     if isnan(temp):
         return(readTemperature())
     else:
@@ -78,20 +79,26 @@ def giveTemperatureValue():
 
 
 
-button_pushed = False
-button_timer = 0
+#button_pushed = False
+button_pushed = True
+button_last_time_pressed = 0
 alpha = 0.
 alpha_list = []
-clock = 0.
-startzeit = 0.
+clock = time.time()
+startzeit = time.time()
 time_list = []
 Temperatur_list = []
+GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
+GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
 
-while True:
-    if (button_timer == 0):
-        if GPIO.input(10) == GPIO.HIGH:
+pause_between_measurements = 0.3
+
+#while True:
+for i in range(1,1000):
+    if (time.time()-button_last_time_pressed > 5):  # ein Knopfdruck wird erst wieder 5s nach der letzten Betätigung registriert
+        if GPIO.input(11) == GPIO.HIGH: #()'False' zum Testen am PC)
             toggle_button()
-            button_timer = 10
+            button_last_time_pressed = time.time()
             if (button_pushed == True):
                 clock = time.time()     # Startzeitpunkt der Messung setzen
                 startzeit = clock
@@ -101,11 +108,9 @@ while True:
                 dateiname = zeit_str+'Aushaerteverlauf.xlsx'
                 exportDataToExcel([time_list,Temperatur_list,alpha_list],dateiname,zeit_str)
 
-    elif (button_timer > 0):
-        button_timer += (-1)
-
     if (button_pushed == True):
-        temp = giveTemperatureValue()
+        temp = giveTemperatureValue()+273.15    # aktuelle Temperatur in K anfordern
+        #temp = 100+273.15   # Testtemperatur
         clock_new = time.time()
         delta_t = clock_new - clock
         alpha = alpha+(grindlingModell(alpha,temp) * delta_t)
@@ -113,7 +118,8 @@ while True:
         time_list.append(clock_new-startzeit)
         alpha_list.append(alpha)
         clock = clock_new
+        print('Zeit[s]:',time_list[-1],',  Temperatur[K]:', Temperatur_list[-1], ',  alpha:', alpha_list[-1])
 
-    time.sleep(0.5)
+    time.sleep(pause_between_measurements)
 
 
