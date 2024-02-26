@@ -87,6 +87,8 @@ GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen a
 
 pause_between_measurements = 0.3
 
+print('Script läuft. Drücke Strg-C um abzubrechen.')
+
 while True:
 #for i in range(1,1000):    # (zum Testen am PC anstelle 'while True')
     if (time.time()-button_last_time_pressed > 5):  # ein Knopfdruck wird erst wieder 5s nach der letzten Betätigung registriert
@@ -101,11 +103,13 @@ while True:
             if (button_pushed == True):
                 clock = time.time()     # Startzeitpunkt der Messung setzen
                 startzeit = clock
+                print ('Messung gestartet.')
             else:                       # Messung Abschließen
                 zeit = time.localtime(time.time())
                 zeit_str = str(zeit.tm_year)+'-'+str(zeit.tm_mon)+'-'+str(zeit.tm_mday)+' '+str(zeit.tm_hour)+'-'+str(zeit.tm_min)+'-'+str(zeit.tm_sec)
                 dateiname = zeit_str+'Aushaerteverlauf.xlsx'
                 exportDataToExcel([time_list,Temperatur_list,alpha_list],dateiname,zeit_str)
+                print ('Messung beendet und Daten in Exceltabelle gespeichert.')
 
     if (button_pushed == True):
         temp = giveTemperatureValue()+273.15    # aktuelle Temperatur in K anfordern
