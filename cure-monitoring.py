@@ -83,8 +83,8 @@ alpha = 0.
 datenset = []
 clock = time.time()
 startzeit = time.time()
-GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
-GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
+#GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
+GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
 # setup PT1000 mit MAX31865
 cs = digitalio.DigitalInOut(board.D5)
 spi = board.SPI()
@@ -98,7 +98,7 @@ print('Script läuft. Drücke Strg-C um abzubrechen.')
 while True:
 #for i in range(1,1000):    # (zum Testen am PC anstelle 'while True')
     if (time.time()-button_last_time_pressed > 5):  # ein Knopfdruck wird erst wieder 5s nach der letzten Betätigung registriert
-        if GPIO.input(11) == GPIO.HIGH: # ('False' zum Testen am PC)
+        if GPIO.input(17) == GPIO.HIGH: # ('False' zum Testen am PC)
             
             if button_pushed == True:   # toggle button
                 button_pushed = False
