@@ -6,6 +6,9 @@
 
 import numpy as np
 import time
+import digitalio
+import board
+import adafruit_max31865
 from math import isnan
 import RPi.GPIO as GPIO     # ('#' zum Testen am PC)
 import openpyxl
@@ -53,8 +56,8 @@ def exportDataToExcel(data, name_exceldatei, name_sheet):   # schreibt eine list
     workbook.close()
 
 def readTemperature():      # liest die Temperatur des Sensors aus. Falls der Wert 'nan' entspricht, wird ein neuer Messwert angefordert, bis eine gültige Zahl vorliegt
-#    temp = sensor.readTempC()
-    temp = 100  # Testtemperatur
+    temp = sensor.temperature
+#    temp = 100  # Testtemperatur
     if isnan(temp):
         return(readTemperature())
     else:
@@ -82,6 +85,11 @@ clock = time.time()
 startzeit = time.time()
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering       # ()'#' zum Testen am PC)
 GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)         # ()'#' zum Testen am PC)
+# setup PT1000 mit MAX31865
+cs = digitalio.DigitalInOut(board.D5)
+spi = board.SPI()
+sensor = adafruit_max31865.MAX31865(spi,cs,rtd_nominal=1000,ref_resistor=4300.0,wires=2)
+
 
 pause_between_measurements = 0.3
 
@@ -121,6 +129,11 @@ while True:
         datenset.append(new_set)
         clock = clock_new
         print('Zeit[s], Temperatur[K], alpha:', new_set)
+    else:
+        t = sensor.temperature
+        print('Messung läuft nicht.')
+        print('Temperatur: {0:0.3F}*C'.format(t))
+
 
     time.sleep(pause_between_measurements)
 
