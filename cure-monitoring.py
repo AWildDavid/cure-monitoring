@@ -63,9 +63,9 @@ def readTemperature():      # liest die Temperatur des Sensors aus. Falls der We
     else:
         return(temp)
 
-def giveTemperatureValue():
+def giveTemperatureValue():     # nimmt 7 Temperaturwerte auf, entfernt die 2 höchsten und die 2 niedrigsten Werten und gibt den Durchschnitt der 3 verbleibenden Werte zurück
     temperatures = []
-    for i in range(1,10):
+    for i in range(1,7):
         temp = readTemperature()
         temperatures.append(temp)
     temperatures.sort()
@@ -91,7 +91,7 @@ spi = board.SPI()
 sensor = adafruit_max31865.MAX31865(spi,cs,rtd_nominal=1000,ref_resistor=4300.0,wires=2)
 
 
-pause_between_measurements = 0.3
+pause_between_measurements = 0.1
 
 print('Script läuft. Drücke Strg-C um abzubrechen.')
 
