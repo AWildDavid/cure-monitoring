@@ -63,13 +63,13 @@ def readTemperature():      # liest die Temperatur des Sensors aus. Falls der We
     else:
         return(temp)
 
-def giveTemperatureValue():     # nimmt 7 Temperaturwerte auf, entfernt die 2 höchsten und die 2 niedrigsten Werten und gibt den Durchschnitt der 3 verbleibenden Werte zurück
+def giveTemperatureValue():     # nimmt 5 Temperaturwerte auf, entfernt den höchsten und den niedrigsten Wert und gibt den Durchschnitt der 3 verbleibenden Werte zurück
     temperatures = []
-    for i in range(1,7):
+    for i in range(1,5):
         temp = readTemperature()
         temperatures.append(temp)
     temperatures.sort()
-    trimmed = temperatures[2:-2]        # höchste und niedrigste zwei Werte werden entfernt
+    trimmed = temperatures[1:-1]        # höchste und niedrigste zwei Werte werden entfernt
     average = sum(trimmed)/len(trimmed) # Durchschnittswert der Messwerte berechnen
     return(average)
 
