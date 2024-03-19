@@ -108,6 +108,8 @@ while True:
             if (button_pushed == True):
                 clock = time.time()     # Startzeitpunkt der Messung setzen
                 startzeit = clock
+                alpha = 0.
+                datenset = []
                 print ('Messung gestartet.')
             else:                       # Messung Abschließen
                 zeit = time.localtime(time.time())
