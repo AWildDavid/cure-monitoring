@@ -114,7 +114,7 @@ while True:
             else:                       # Messung Abschließen
                 zeit = time.localtime(time.time())
                 zeit_str = str(zeit.tm_year)+'-'+str(zeit.tm_mon)+'-'+str(zeit.tm_mday)+' '+str(zeit.tm_hour)+'-'+str(zeit.tm_min)+'-'+str(zeit.tm_sec)
-                dateiname = zeit_str+'Aushaerteverlauf.xlsx'
+                dateiname = zeit_str+' Aushaerteverlauf.xlsx'
                 exportDataToExcel(datenset,dateiname,zeit_str)
                 print ('Messung beendet und Daten in Exceltabelle gespeichert. Drücke Strg-C um das Skript zu beenden oder betätige den Knopf, um eine neue Messung zu starten.')
 
