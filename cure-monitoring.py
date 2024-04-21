@@ -90,7 +90,7 @@ spi = board.SPI()
 sensor = adafruit_max31865.MAX31865(spi,cs,rtd_nominal=1000,ref_resistor=4300.0,wires=2)
 
 
-pause_between_measurements = 0.05    # beugt zudem Prellen beim betätigen des Knopfes vor
+pause_between_measurements = 0.05
 
 print('Script läuft. Drücke Strg-C um abzubrechen.')
 
